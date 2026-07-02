@@ -1,0 +1,36 @@
+{
+    "title": "Malaysia Clinic Scraper Input",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "keyword": {
+            "title": "Keyword (Medical Service)",
+            "type": "string",
+            "description": "The specific medical service (e.g., 'clinic', 'dental clinic', 'medical center').",
+            "editor": "textfield",
+            "prefill": "clinic"
+        },
+        "location": {
+            "title": "Location (City/State)",
+            "type": "string",
+            "description": "Malaysia Region (e.g., 'Kuala Lumpur', 'Penang', 'Johor').",
+            "editor": "textfield",
+            "prefill": "Kuala Lumpur"
+        },
+        "maxLeads": {
+            "title": "Maximum Leads",
+            "type": "integer",
+            "description": "Maximum number of Malaysia clinic leads to extract.",
+            "default": 100,
+            "minimum": 1
+        },
+        "proxyConfiguration": {
+            "title": "Proxy Configuration",
+            "type": "object",
+            "description": "Proxy settings. Apify Residential Proxy (Malaysia targeted) is highly required.",
+            "prefill": { "useApifyProxy": true },
+            "editor": "proxy"
+        }
+    },
+    "required": ["keyword", "location"]
+}
