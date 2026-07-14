@@ -3,19 +3,14 @@
     "type": "object",
     "schemaVersion": 1,
     "properties": {
-        "keyword": {
-            "title": "Keyword (Medical Service)",
-            "type": "string",
-            "description": "The specific medical service (e.g., 'clinic', 'dental clinic', 'medical center').",
-            "editor": "textfield",
-            "prefill": "clinic"
-        },
-        "location": {
-            "title": "Location (City/State)",
-            "type": "string",
-            "description": "Malaysia Region (e.g., 'Kuala Lumpur', 'Penang', 'Johor').",
-            "editor": "textfield",
-            "prefill": "Kuala Lumpur"
+        "startUrls": {
+            "title": "Start URLs",
+            "type": "array",
+            "description": "List of search URLs to scrape.",
+            "editor": "requestListSources",
+            "prefill": [
+                { "url": "https://www.clinicadvisor.com/malaysia/kuala-lumpur/clinics" }
+            ]
         },
         "maxLeads": {
             "title": "Maximum Leads",
@@ -32,5 +27,5 @@
             "editor": "proxy"
         }
     },
-    "required": ["keyword", "location"]
+    "required": ["startUrls"]
 }

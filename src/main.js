@@ -7,8 +7,7 @@ await Actor.init();
 try {
     const input = await Actor.getInput();
     const { 
-        keyword = 'clinic', 
-        location = 'Kuala Lumpur', 
+        startUrls = [],
         maxLeads = 100,
         proxyConfiguration 
     } = input || {};
@@ -19,7 +18,7 @@ try {
         apifyProxyCountry: 'MY'
     });
 
-    log.info(`Searching Malaysia healthcare directories for "${keyword}" in "${location}"`);
+    log.info(`Searching Malaysia healthcare directories...`);
     
     await Actor.charge({ eventName: 'apify-actor-start', count: 1 });
 
@@ -60,7 +59,7 @@ try {
 
                 // Specialty
                 const catElement = await item.$('.category, .industry, .cat-link, .specialty');
-                const specialty = catElement ? (await catElement.innerText()).trim() : keyword;
+                const specialty = catElement ? (await catElement.innerText()).trim() : '';
 
                 // Phones
                 const phoneElement = await item.$('a[href^="tel:"], .phone, .contact-number, .call-btn, .mobile');
@@ -147,14 +146,14 @@ try {
         }
     });
 
-    const formatKeyword = encodeURIComponent(keyword);
-    const formatLocation = encodeURIComponent(location);
-    // Generic URL for MY directories
-    const startUrl = `https://www.yellowpages.my/search?q=${formatKeyword}&location=${formatLocation}`;
-    
-    await crawler.addRequests([{
-        url: startUrl
-    }]);
+    if (startUrls && startUrls.length > 0) {
+        for (const req of startUrls) {
+            await crawler.addRequests([{ url: typeof req === 'string' ? req : req.url }]);
+        }
+    } else {
+        log.warning('No startUrls provided. Using default.');
+        await crawler.addRequests([{ url: 'https://www.clinicadvisor.com/malaysia/kuala-lumpur/clinics' }]);
+    }
 
     armKillSwitch(crawler);
     await crawler.run();
